@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dice_icons/dice_icons.dart';
+import 'dart:math';
 
 void main() {
   runApp(MaterialApp(
@@ -28,25 +29,39 @@ void main() {
   ));
 }
 
-class DicePage extends StatelessWidget {
+class DicePage extends StatefulWidget {
   const DicePage({Key? key}) : super(key: key);
 
   @override
+  State<DicePage> createState() => _DicePageState();
+}
+
+class _DicePageState extends State<DicePage> {
+  int leftDiceNumber = 1;
+  int rightDiceNumber = 2;
+  int life = 3;
+
+  @override
   Widget build(BuildContext context) {
-    var leftDiceNumber = 1;
-    var rightDiceNumber = 2;
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
           child: Text('💡 Score 10 to win the game',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontFamily: 'SourceSansPro',
                   fontSize: 20.0)),
         ),
+        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          Container(
+            child: Expanded(child: Image.asset('images/$life.png')),
+            width: 260,
+            height: 130,
+          )
+        ]),
         Padding(
-          padding: const EdgeInsets.only(top: 40.0, bottom: 10.0),
+          padding: const EdgeInsets.only(bottom: 30.0),
           child: Row(
             children: [
               Expanded(
@@ -67,7 +82,15 @@ class DicePage extends StatelessWidget {
             SizedBox(width: 130.0),
             ElevatedButton(
               onPressed: () {
-                print('Clicked');
+                setState(() {
+                  leftDiceNumber = Random().nextInt(6) + 1;
+                  rightDiceNumber = Random().nextInt(6) + 1;
+                  life--;
+                  if (life <= 0 && (leftDiceNumber + rightDiceNumber != 10)) {
+                    life = 3;
+                    print("Done");
+                  }
+                });
               },
               child: Text('Click me to play !'),
             ),
