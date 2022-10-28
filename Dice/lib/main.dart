@@ -40,6 +40,33 @@ class _DicePageState extends State<DicePage> {
   int leftDiceNumber = 1;
   int rightDiceNumber = 2;
   int life = 3;
+  String message = "";
+  String result = "";
+
+  Future<void> showAlertDialog() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Your result"),
+            content: SingleChildScrollView(
+                child: ListBody(
+              children: [Text("$message you $result")],
+            )),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "OK",
+                    style: TextStyle(
+                        color: Colors.green, fontWeight: FontWeight.bold),
+                  ))
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,10 +112,20 @@ class _DicePageState extends State<DicePage> {
                 setState(() {
                   leftDiceNumber = Random().nextInt(6) + 1;
                   rightDiceNumber = Random().nextInt(6) + 1;
+
                   life--;
+
                   if (life <= 0 && (leftDiceNumber + rightDiceNumber != 10)) {
                     life = 3;
-                    print("Done");
+                    message = "oof";
+                    result = "lose!";
+                    showAlertDialog();
+                  } else if (life <= 0 &&
+                      (leftDiceNumber + rightDiceNumber == 10)) {
+                    life = 3;
+                    message = "Hurray";
+                    result = "Won!";
+                    showAlertDialog();
                   }
                 });
               },
