@@ -43,15 +43,32 @@ class _DicePageState extends State<DicePage> {
   String message = "";
   String result = "";
 
+  Color getColor() {
+    if (result == "Lose!") {
+      return Colors.red;
+    } else {
+      return Colors.green;
+    }
+  }
+
   Future<void> showAlertDialog() async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Your result"),
+            title: Center(
+              child: Text("Your result"),
+            ),
             content: SingleChildScrollView(
                 child: ListBody(
-              children: [Text("$message you $result")],
+              children: [
+                Center(
+                  child: Text(
+                    "$message you $result",
+                    style: TextStyle(color: getColor()),
+                  ),
+                )
+              ],
             )),
             actions: [
               TextButton(
@@ -117,8 +134,8 @@ class _DicePageState extends State<DicePage> {
 
                   if (life <= 0 && (leftDiceNumber + rightDiceNumber != 10)) {
                     life = 3;
-                    message = "oof";
-                    result = "lose!";
+                    message = "Oof";
+                    result = "Lose!";
                     showAlertDialog();
                   } else if (life <= 0 &&
                       (leftDiceNumber + rightDiceNumber == 10)) {
