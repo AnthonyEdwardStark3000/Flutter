@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meme_creator/nav_drawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,7 +20,9 @@ class _HomePageState extends State<HomePage> {
           )),
           backgroundColor: Colors.indigoAccent,
         ),
-        drawer: Drawer(),
-        body: const Text('check'));
+        drawer: const NavDrawer(
+          selected: DrawerSelection.home,
+        ),
+        body: const Center(child: Text('Home Page')));
   }
 }
